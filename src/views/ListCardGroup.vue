@@ -5,7 +5,7 @@
         :title="task.subject"
         v-for="(task, index) in tasks"
         :key="index"
-        style="min-width: 21em; max-width: 21em; float: left"
+        style="min-width: 315px; max-width: 315px; float: left"
         class="mb-2"
       >
         <b-card-text>{{ task.description }}</b-card-text>
@@ -55,7 +55,7 @@
 <script>
 import ToastMixin from "@/mixins/toastMixin";
 export default {
-  name: "List",
+  name: "ListCardGroup",
 
   mixins: [ToastMixin],
 

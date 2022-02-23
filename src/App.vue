@@ -9,6 +9,7 @@
         <b-navbar-nav>
           <b-nav-item to="/">Tarefas</b-nav-item>
           <b-nav-item to="/form">Formulario</b-nav-item>
+          <b-nav-item to="/conf">Configurações</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>

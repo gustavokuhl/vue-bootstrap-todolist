@@ -47,7 +47,6 @@ export default {
   },
 
   created() {
-    console.log(this.$route.params.index);
     if (Number.isInteger(this.$route.params.index)) {
       this.methodSave = "update";
       let tasks = JSON.parse(localStorage.getItem("tasks"));

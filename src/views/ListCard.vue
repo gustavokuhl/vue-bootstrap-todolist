@@ -1,43 +1,26 @@
 <template>
   <div class="container mt-2">
-    <div
-      v-for="(task, index) in tasks"
-      :key="index"
-      class="mb-2 accordion"
-      role="tablist"
-    >
-      <b-card no-body class="mb-1">
-        <b-card-header header-tag="header" class="p-1" role="tab">
+    <div v-for="(task, index) in tasks" :key="index" class="mb-2">
+      <b-card :title="task.subject">
+        <b-card-text>{{ task.description }}</b-card-text>
+        <div>
           <b-button
-            block
-            v-b-toggle="'accordion-' + index"
-            variant="outline-dark"
-            >{{ task.subject }}</b-button
+            variant="outline-secondary"
+            class="mr-2"
+            @click="edit(index)"
+            size="sm"
           >
-        </b-card-header>
-        <b-collapse
-          :id="'accordion-' + index"
-          accordion="my-accordion"
-          role="tabpanel"
-        >
-          <b-card-body>
-            <b-card-text>{{ task.description }}</b-card-text>
-            <b-button
-              variant="outline-secondary"
-              class="mr-2"
-              @click="edit(index)"
-            >
-              Editar
-            </b-button>
-            <b-button
-              variant="outline-danger"
-              class="mr-2"
-              @click="remove(task, index)"
-            >
-              Excluir
-            </b-button>
-          </b-card-body>
-        </b-collapse>
+            Editar
+          </b-button>
+          <b-button
+            variant="outline-danger"
+            class="mr-2"
+            @click="remove(task, index)"
+            size="sm"
+          >
+            Excluir
+          </b-button>
+        </div>
       </b-card>
     </div>
 
@@ -66,7 +49,7 @@
 <script>
 import ToastMixin from "@/mixins/toastMixin";
 export default {
-  name: "ListAccordion",
+  name: "ListCard",
 
   mixins: [ToastMixin],
 

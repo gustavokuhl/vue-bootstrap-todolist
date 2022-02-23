@@ -1,89 +1,54 @@
 <template>
   <div class="container mt-2">
-    <div v-for="(task, index) in tasks" :key="index" class="mb-2">
-      <b-card :title="task.subject">
-        <b-card-text>{{ task.description }}</b-card-text>
-        <div>
-          <b-button
-            variant="outline-secondary"
-            class="mr-2"
-            @click="edit(index)"
-            size="sm"
-          >
-            Editar
-          </b-button>
-          <b-button
-            variant="outline-danger"
-            class="mr-2"
-            @click="remove(task, index)"
-            size="sm"
-          >
-            Excluir
-          </b-button>
-        </div>
-      </b-card>
+    <div v-if="list_type === TYPE_NORMAL_CARD">
+      <list-card />
     </div>
-
-    <b-modal ref="modalRemove" hide-footer centered title="Exclusão de tarefa">
-      <div class="d-block">
-        Deseja realmente excluir a tarefa
-        <strong>{{ taskSelected.subject }}</strong
-        >?
-      </div>
-      <div class="mt-3 d-flex justify-content-end">
-        <b-button variant="outline-secondary" class="mr-2" @click="hideModal">
-          Cancelar
-        </b-button>
-        <b-button
-          variant="outline-danger"
-          class="mr-2"
-          @click="confirmRemoveTask"
-        >
-          Excluir
-        </b-button>
-      </div>
-    </b-modal>
+    <div v-else-if="list_type === TYPE_ACCORDION">
+      <list-accordion />
+    </div>
+    <div v-else-if="list_type === TYPE_SPLIT_CARD">
+      <list-card-group />
+    </div>
+    <div v-else>
+      <p>ViewType inválida</p>
+    </div>
   </div>
 </template>
 
 <script>
 import ToastMixin from "@/mixins/toastMixin";
+import ListCard from "./ListCard.vue";
+import ListCardGroup from "./ListCardGroup.vue";
+import ListAccordion from "./ListAccordion.vue";
+
 export default {
   name: "List",
 
   mixins: [ToastMixin],
 
+  components: {
+    ListCard,
+    ListCardGroup,
+    ListAccordion,
+  },
+
   data() {
     return {
-      tasks: [],
-      taskSelected: [],
+      list_type: this.getListType(),
     };
   },
 
-  created() {
-    this.tasks = localStorage.getItem("tasks")
-      ? JSON.parse(localStorage.getItem("tasks"))
-      : [];
+  methods: {
+    getListType() {
+      const confs = JSON.parse(localStorage.getItem("conf"));
+      return confs ? confs.viewType : this.TYPE_NORMAL_CARD;
+    },
   },
 
-  methods: {
-    edit(index) {
-      this.$router.push({ name: "form", params: { index } });
-    },
-    remove(task, index) {
-      this.taskSelected = task;
-      this.taskSelected.index = index;
-      this.$refs.modalRemove.show();
-    },
-    hideModal() {
-      this.$refs.modalRemove.hide();
-    },
-    confirmRemoveTask() {
-      this.tasks.splice(this.taskSelected.index, 1);
-      localStorage.setItem("tasks", JSON.stringify(this.tasks));
-      this.hideModal();
-      this.showToast("success", "Sucesso!", "Tarefa excluida com sucesso.");
-    },
+  created() {
+    this.TYPE_NORMAL_CARD = 1;
+    this.TYPE_ACCORDION = 2;
+    this.TYPE_SPLIT_CARD = 3;
   },
 };
 </script>
