@@ -41,7 +41,7 @@ export default {
   methods: {
     getListType() {
       const confs = JSON.parse(localStorage.getItem("conf"));
-      return confs ? confs.viewType : this.TYPE_NORMAL_CARD;
+      return confs ? confs.viewType : this.$router.push({ name: "conf" });
     },
   },
 
